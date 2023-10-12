@@ -14,10 +14,14 @@ export default function Product({ name, price }) {
         borderRadius: '5px',
         border: '2px solid',
         color: isDragging ? '#007BFF' : '#000',
+        marginTop: '10px',
+        display:"flex",
+        justifyContent:"center",
+        fontSize:"20px",
     };
 
     return (
-        <div ref={ref} style={dragStyles}>
+        <div ref={ref} style={dragStyles} >
             {name} - {price} TL
         </div>
     );

@@ -13,11 +13,11 @@ export default function Home() {
   const [avatarCount, setAvatarCount] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [avatarProducts, setAvatarProducts] = useState([]);
-  
+
   const isTouchDevice = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
 
   const { register, handleSubmit } = useForm();
-  
+
   const onCountSubmit = (data) => {
     setAvatarCount(data.count);
     setAvatarProducts(Array(Number(data.count)).fill([]));
@@ -48,28 +48,37 @@ export default function Home() {
         <>
           <AddProductForm onAdd={handleAddProduct} />
           <DndProvider backend={isTouchDevice ? TouchBackend : HTML5Backend}>
-        <div className="my-4">
-          {products.map((product, index) => (
-            <Product key={index} name={product.name} price={product.price} />
-          ))}
-        </div>
-
-        <div className="row">
-          {Array.from({ length: avatarCount }).map((_, avatarIndex) => (
-            <div className="col-6" key={`avatar-column-${avatarIndex}`}>
-              <Avatar key={`avatar${avatarIndex}`} name={`avatar${avatarIndex}`} onDrop={(product) => handleProductDrop(avatarIndex, product)} />
-
-              <div>
-                <h4>Avatar {avatarIndex + 1} Ürünleri</h4>
-                <ul>
-                  {avatarProducts[avatarIndex].map((product, productIndex) => (
-                    <li key={productIndex}>{product.name} - {product.price} TL</li>                
-                  ))}
-                </ul>
-              </div>
+            <div className="my-4">
+              {products.map((product, index) => (
+                <Product key={index} name={product.name} price={product.price} style={{marginTop:"10px"}}/>
+              ))}
             </div>
-          ))}
-          </div>
+
+            <div className="row">
+              <label className='text-center text-bg-danger mb-4'>Genel Toplam:
+                {avatarProducts.reduce((totalSum, userProducts) => {
+                  return totalSum + userProducts.reduce((userTotal, product) => userTotal + product.price, 0);
+                }, 0)} TL
+              </label>
+              {Array.from({ length: avatarCount }).map((_, avatarIndex) => (
+                <div className="col-6" key={`avatar-column-${avatarIndex}`}>
+                  <Avatar key={`avatar${avatarIndex}`} name={`avatar${avatarIndex}`} onDrop={(product) => handleProductDrop(avatarIndex, product)} />
+
+                  <div>
+                    <h4>{avatarIndex + 1}. Kullanıcının Hesabı</h4>
+                    <ul>
+                      {avatarProducts[avatarIndex].map((product, productIndex) => (
+                        <li key={productIndex}>{product.name} - {product.price} TL</li>
+                      ))}
+                    </ul>
+                    <p>
+                      Toplam:
+                      {avatarProducts[avatarIndex].reduce((total, product) => total + product.price, 0)} TL
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </DndProvider>
         </>
       )}

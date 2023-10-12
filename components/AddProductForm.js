@@ -14,6 +14,7 @@ export default function AddProductForm({ onAdd }) {
   return (
     <form onSubmit={handleSubmit}>
       <input
+        style={{marginBottom:"10px"}}
         value={name}
         onChange={(e) => setName(e.target.value)}
         placeholder="Ürün adı"
@@ -23,7 +24,8 @@ export default function AddProductForm({ onAdd }) {
         onChange={(e) => setPrice(e.target.value)}
         placeholder="Fiyat"
       />
-      <button type="submit">Ekle</button>
+      <button type="submit" style={{marginTop:"5px",borderRadius:"8px"}}>Ekle</button>
+      <p className='text-muted'>*Mobil Cihazlarda ürün ekledikten sonra sürükle bırak ile kullanıcı görseli üzerine bırakabilirsiniz.</p>
     </form>
   );
 }
